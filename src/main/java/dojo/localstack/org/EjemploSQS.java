@@ -2,6 +2,8 @@ package dojo.localstack.org;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
@@ -18,8 +20,11 @@ public class EjemploSQS {
          * Crear una instancia de SQS
          */
     	
+    	BasicAWSCredentials credenciales = new BasicAWSCredentials("access_key_id", "secret_key_id");
+    	
         final AmazonSQS sqs = AmazonSQSClientBuilder.standard()
-        		.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://127.0.0.1:4576", "us-east-1")).build();
+        		.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://127.0.0.1:4576", "us-east-1"))
+        		.withCredentials(new AWSStaticCredentialsProvider(credenciales)).build();
         System.out.println("===========================================");
         System.out.println("     Consumo de SQS en LocalStack");
         System.out.println("===========================================\n");

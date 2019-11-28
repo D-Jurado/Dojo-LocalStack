@@ -11,6 +11,8 @@ import java.io.Writer;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
@@ -30,7 +32,10 @@ public class EjemploS3 {
     	 * Crear una instancia de S3
     	 */
     	
+    	BasicAWSCredentials awsCreds = new BasicAWSCredentials("access_key_id", "secret_key_id");
+    	
         AmazonS3 s3 = AmazonS3ClientBuilder.standard()
+        		.withCredentials(new AWSStaticCredentialsProvider(awsCreds))
         		.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://127.0.0.1:4572", "us-east-1")).build();
         
         String bucketName = "dojo-localstack";
@@ -68,6 +73,7 @@ public class EjemploS3 {
             System.out.println("Descargando un archivo");
             S3Object object = s3.getObject(new GetObjectRequest(bucketName, key));
             System.out.println("Content-Type: "  + object.getObjectMetadata().getContentType());
+            System.out.println(object.getObjectContent());
             displayTextInputStream(object.getObjectContent());
 
             /*
